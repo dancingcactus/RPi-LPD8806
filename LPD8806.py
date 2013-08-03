@@ -89,7 +89,7 @@ class ColorHSV:
 
 class LEDStrip:
 
-	def __init__(self, leds, dev="/dev/spidev0.0"):
+	def __init__(self, leds, dev="/dev/spidev1.0"):
 		#Variables:
 		#	leds -- strand size
 		#	dev -- spi device
@@ -167,6 +167,27 @@ class LEDStrip:
 	def fillOff(self, start=0, end=0):
 		self.fillRGB(0, 0, 0, start, end)
 
+	#Enable LEDs to be referenced in terms of a grid
+	def enableGrid(self, rows):
+		self.rows = rows
+		self.columns = self.leds/rows;
+
+	#Set the RGB values for an entire row
+	def setRowRGB(self,r,g,b,rowNum):
+		#TODO add check to make sure grid is enabled
+		#TODO validate inputs
+		currentPixel = rowNum*self.columns;
+		self.fillRGB(r,g,b,currentPixel, currentPixel + self.columns-1);
+
+	#Set the RGB values for a column
+	def setColumnRGB(self,r,g,b,colNum):
+		#TODO add check to make sure grid is enabled
+		#TODO Valideate inputs
+		currentPixel = colNum;
+		for i in range(self.rows):
+			self.setRGB(currentPixel,r,g,b);
+			currentPixel +=self.columns;
+			
 	#internal use only. sets pixel color
 	def __set_internal(self, pixel, color):
 		if(pixel < 0 or pixel > self.lastIndex):
