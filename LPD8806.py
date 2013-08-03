@@ -95,8 +95,9 @@ class LEDStrip:
 		#	dev -- spi device
 		
 		#Error Messages
-		self.NO_GRID = "Grid Not Enabled"
-
+		self.NO_GRID_ERROR = "Grid Not Enabled"
+		self.EXCEED_RANGE_ERROR = "There aren't that many Rows, Columns and/or Pixels"
+		
 		self.c_order = ChannelOrder.GRB
 		self.dev = dev
 		self.spi = file(self.dev, "wb")
@@ -168,7 +169,7 @@ class LEDStrip:
 	#Saturation and Value components of HSV are set to max.
 	def fillHue(self, hue, start=0, end=0):
 		self.fill(ColorHSV(hue).getColorRGB(), start, end)
-		
+
 	def fillOff(self, start=0, end=0):
 		self.fillRGB(0, 0, 0, start, end)
 
@@ -179,31 +180,37 @@ class LEDStrip:
 
 	#Set the RGB values for an entire row
 	def setRowRGB(self,r,g,b,rowNum):
-		if self.columns >0 and self.rows >0:
-			currentPixel = rowNum*self.columns;
+		if self.columns >0 and self.rows >0 and rowNum <= self.rows:
+			currentPixel = (rowNum-1)*self.columns;
 			self.fillRGB(r,g,b,currentPixel, currentPixel + self.columns-1);
 			return True;
+		elif rowNum  >= self.rows:
+			return self.EXCEED_RANGE_ERROR;
 		else:
-			return self.NO_GRID;
+			return self.NO_GRID_ERROR;
 
 	#Set Row to HSV Value
 	def setRowHSV(self,h,s,v,rowNum):
-		return self.setRowRGB(ColorHSV(h,s,v).getColorRGB(),colNum);
+		c = ColorHSV(h,s,v).getColorRGB();		
+		return self.setRowRGB(c.R,c.G,c.B,rowNum);
 
 	#Set the RGB values for a column
 	def setColumnRGB(self,r,g,b,colNum):
-		if self.columns > 0 and self.rows > 0:	
-			currentPixel = colNum;
+		if self.columns > 0 and self.rows > 0 and colNum <= self.columns:	
+			currentPixel = colNum-1;
 			for i in range(self.rows):
 				self.setRGB(currentPixel,r,g,b);
 				currentPixel +=self.columns;
 			return True
+		elif colNum >= self.columns:
+			return self.EXCEED_RANGE_ERROR;
 		else:
-			return self.NO_GRID
+			return self.NO_GRID_ERROR;
 
 	#Set Column to HSV Value	
 	def setColumnHSV(self, h, s, v, colNum):
-		return self.setColumnRGB(ColorHSV(h,s,v).getColorRGB(),colNum);
+		c = ColorHSV(h,s,v).getColorRGB();
+		return self.setColumnRGB(c.R,c.G,c.B,colNum);
 			
 	#internal use only. sets pixel color
 	def __set_internal(self, pixel, color):
