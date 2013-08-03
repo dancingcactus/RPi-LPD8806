@@ -94,6 +94,9 @@ class LEDStrip:
 		#	leds -- strand size
 		#	dev -- spi device
 		
+		#Error Messages
+		self.NO_GRID = "Grid Not Enabled"
+
 		self.c_order = ChannelOrder.GRB
 		self.dev = dev
 		self.spi = file(self.dev, "wb")
@@ -101,7 +104,9 @@ class LEDStrip:
 		self.lastIndex = self.leds - 1
 		self.gamma = bytearray(256)
 		self.buffer = [0 for x in range(self.leds + 1)]
-		
+		self.rows = 0
+		self.columns = 0
+
 		self.masterBrightness = 1.0
 		
 		#anim step vars
@@ -174,19 +179,31 @@ class LEDStrip:
 
 	#Set the RGB values for an entire row
 	def setRowRGB(self,r,g,b,rowNum):
-		#TODO add check to make sure grid is enabled
-		#TODO validate inputs
-		currentPixel = rowNum*self.columns;
-		self.fillRGB(r,g,b,currentPixel, currentPixel + self.columns-1);
+		if self.columns >0 and self.rows >0:
+			currentPixel = rowNum*self.columns;
+			self.fillRGB(r,g,b,currentPixel, currentPixel + self.columns-1);
+			return True;
+		else:
+			return self.NO_GRID;
+
+	#Set Row to HSV Value
+	def setRowHSV(self,h,s,v,rowNum):
+		return self.setRowRGB(ColorHSV(h,s,v).getColorRGB(),colNum);
 
 	#Set the RGB values for a column
 	def setColumnRGB(self,r,g,b,colNum):
-		#TODO add check to make sure grid is enabled
-		#TODO Valideate inputs
-		currentPixel = colNum;
-		for i in range(self.rows):
-			self.setRGB(currentPixel,r,g,b);
-			currentPixel +=self.columns;
+		if self.columns > 0 and self.rows > 0:	
+			currentPixel = colNum;
+			for i in range(self.rows):
+				self.setRGB(currentPixel,r,g,b);
+				currentPixel +=self.columns;
+			return True
+		else:
+			return self.NO_GRID
+
+	#Set Column to HSV Value	
+	def setColumnHSV(self, h, s, v, colNum):
+		return self.setColumnRGB(ColorHSV(h,s,v).getColorRGB(),colNum);
 			
 	#internal use only. sets pixel color
 	def __set_internal(self, pixel, color):
