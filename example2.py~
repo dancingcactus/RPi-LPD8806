@@ -124,7 +124,7 @@ R2 = randrange(255);
 G2 = randrange(255);
 B2 = randrange(255);
 
-for i in range (1000):
+for i in range (100):
 	row =math.fabs((i%10)-5)
 	rowBlank =math.fabs(((i-1)%10)-5)
 
@@ -149,6 +149,6 @@ for i in range (1000):
 		led.setRowRGB(((R2-R1)*fade + R1),((G2-G1)*fade+G1),((B2-B1)*fade+B1),int(row));
 		led.setRowRGB(0,0,0,int(rowBlank));
 		led.update();
-		sleep(0.01);
+		sleep(0.1);
 
 led.all_off();

@@ -1,9 +1,10 @@
 #!/usr/bin/env python
 import colorsys
 import math
-
+import multiprocessing
+from time import sleep
 """
-LPD8806.py: Raspberry Pi library for LPD8806 based RGB light strips
+LPD8806.py: Raspberry pi library for LPD8806 based RGB light strips
 Initial code from: https://github.com/Sh4d/LPD8806
 
 Provides the ability to drive a LPD8806 based strand of RGB leds from the
@@ -86,10 +87,11 @@ class ColorHSV:
 	def __str__( self ):
 		return "%0.2f,%0.2f,%0.2f" % (self.H, self.S, self.V)
 		
-
-class LEDStrip:
+#Made this multi process so that I can run animations and still give commands
+class LEDStrip(multiprocessing.Process):
 
 	def __init__(self, leds, dev="/dev/spidev1.0"):
+		multiprocessing.Process.__init__(self, name="leds")
 		#Variables:
 		#	leds -- strand size
 		#	dev -- spi device
@@ -249,7 +251,15 @@ class LEDStrip:
 		self.update()
 		self.fillOff()
 		self.update()
-		
+	#Run with Multiprocess
+	def run(self):
+		self.fillRGB(0,0,255);
+		self.update();
+		print "lights on"
+		sleep(5)
+		self.all_off();
+		print "lights off"
+
 	#Get color from wheel value (0 - 384)
 	def wheel_color(self, wheelpos):
 		if wheelpos < 0:
