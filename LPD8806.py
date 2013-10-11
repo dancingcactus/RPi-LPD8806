@@ -58,7 +58,7 @@ class Color:
 	#gets ColorHSV object
 	def getColorHSV(self):
 		h, s, v = colorsys.rgb_to_hsv(self.R / 255.0, self.G / 255.0, self.B / 255.0)
-		return ColorHSV(h, s, v)
+		return ColorHSV(h * 360, s, v)
 
 	def __str__( self ):
 		return "%d,%d,%d" % (self.R, self.G, self.B)
@@ -100,7 +100,7 @@ class LEDStrip:
 		
 		self.c_order = ChannelOrder.GRB
 		self.dev = dev
-		self.spi = file(self.dev, "wb")
+		self.spi = open(self.dev, "wb")
 		self.leds = leds
 		self.lastIndex = self.leds - 1
 		self.gamma = bytearray(256)
