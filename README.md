@@ -1,4 +1,6 @@
-Raspberry Pi library for LPD8806 based RGB light strips
+Overview 
+====
+A Python library for the Raspberry Pi (or Beaglebone Black) to drive LPD8806 based RGB light strips
 Initial code from: https://github.com/Sh4d/LPD8806
 
 See a demo video here: http://www.youtube.com/watch?v=g5upsgqASiY
