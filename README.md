@@ -13,6 +13,8 @@ Assuming your Raspberry Pi has a connection to the internet, run the following.
     cd RPi-LPD8806
     python example.py
     
+You should see your LED strip run through a number of animations. 
+
 Here is a basic program that will fill the entire strip red
 
     from LPD8806 import *
