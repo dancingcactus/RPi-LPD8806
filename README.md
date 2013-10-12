@@ -20,7 +20,7 @@ Here is a basic program that will fill the entire strip red
     from LPD8806 import *
     led = LEDStrip(32)
     led.fillRGB(255,0,0)
-    led.update
+    led.update()
     
 LEDStrip() initializes the class to control the strip and takes the number of LEDs as the argument. The arguments for fillRGB() are Red (0-255), Blue (0-255) and Green (0-255). Finally update() writes the colors out to the strip. The LED strip won't change until update is called (common mistake). 
 
