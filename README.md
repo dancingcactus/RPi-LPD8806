@@ -20,7 +20,7 @@ Here is a basic program that will fill the entire strip red
     led.fillRGB(255,0,0)
     led.update
     
-LEDStrip initializes the class to control the strip and takes the number of LEDs as the argument. fillRGB take an Red (0-255), Blue (0-255) and Green (0-255) as arguments. Finally update() writes the colors out to the strip. The LED strip won't change until update is called. 
+LEDStrip() initializes the class to control the strip and takes the number of LEDs as the argument. The arguments for fillRGB() are Red (0-255), Blue (0-255) and Green (0-255). Finally update() writes the colors out to the strip. The LED strip won't change until update is called (common mistake). 
 
 Animations
 ----
