@@ -30,6 +30,12 @@ local.properties
 
 
 #################
+# IDEA / PyCharm
+#################
+
+.idea
+
+#################
 ## Visual Studio
 #################
 
@@ -133,7 +139,7 @@ Desktop.ini
 
 *.py[co]
 *.py~
-
+*.md~
 
 # Packages
 *.egg
