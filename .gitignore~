@@ -139,7 +139,7 @@ Desktop.ini
 
 *.py[co]
 *.py~
-
+*.md~
 
 # Packages
 *.egg

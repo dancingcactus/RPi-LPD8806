@@ -39,11 +39,18 @@ sudo chmod a+rw /dev/spidev0.0
 
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+
+num = 30;
+=======
+=======
+>>>>>>> bb42af55bbe41ac048a9a061b85da0bd877a4f87
 num = 32;
 >>>>>>> bb42af55bbe41ac048a9a061b85da0bd877a4f87
 led = LEDStrip(num)
 #led.setChannelOrder(ChannelOrder.BRG) #Only use this if your strip does not use the GRB order
-#led.setMasterBrightness(0.5) #use this to set the overall max brightness of the strip
+led.setMasterBrightness(0.75) #use this to set the overall max brightness of the strip
 led.all_off()
 
 #setup colors to loop through for fade
@@ -56,7 +63,7 @@ colors = [
 ]
 
 step = 0.01
-for c in range(4):
+for c in range(5):
 	r, g, b = colors[c]
 	level = 0.01
 	dir = step
@@ -118,6 +125,10 @@ for c in range(6):
 for c in range(4):
 	anim = ColorWipe(led, colors[c])
 
+<<<<<<< HEAD
+>>>>>>> bb42af55bbe41ac048a9a061b85da0bd877a4f87
+=======
+>>>>>>> bb42af55bbe41ac048a9a061b85da0bd877a4f87
 	for i in range(num):
 		anim.step()
 		led.update()
@@ -131,8 +142,18 @@ for c in range(4):
 	for i in range(num):
 		anim.step()
 		led.update()
+<<<<<<< HEAD
+<<<<<<< HEAD
+		sleep(0.05)
+		
+=======
 		#sleep(0.03)
 
+>>>>>>> bb42af55bbe41ac048a9a061b85da0bd877a4f87
+=======
+		#sleep(0.03)
+
+>>>>>>> bb42af55bbe41ac048a9a061b85da0bd877a4f87
 led.fillOff()
 
 #scanner: single color and changing color
@@ -140,7 +161,15 @@ anim = LarsonScanner(led, Color(255, 0, 0))
 for i in range(led.lastIndex*4):
 	anim.step()
 	led.update()
+<<<<<<< HEAD
+<<<<<<< HEAD
+	sleep(0.05)
+=======
 	#sleep(0.03)
+>>>>>>> bb42af55bbe41ac048a9a061b85da0bd877a4f87
+=======
+	#sleep(0.03)
+>>>>>>> bb42af55bbe41ac048a9a061b85da0bd877a4f87
 
 led.fillOff()
 
