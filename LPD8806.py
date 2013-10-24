@@ -46,8 +46,8 @@ class LEDStrip:
         #	dev -- spi device
         
 #Error Messages
-		self.NO_GRID_ERROR = "Grid Not Enabled"
-		self.EXCEED_RANGE_ERROR = "There aren't that many Rows, Columns and/or Pixels"
+	self.NO_GRID_ERROR = "Grid Not Enabled"
+	self.EXCEED_RANGE_ERROR = "There aren't that many Rows, Columns and/or Pixels"
         self.c_order = ChannelOrder.GRB
         self.dev = dev
         self.use_py_spi = use_py_spi
