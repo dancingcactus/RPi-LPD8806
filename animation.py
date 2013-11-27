@@ -4,15 +4,17 @@ from color import *
 
 
 class BaseAnimation(object):
-    def __init__(self, led, start, end):
+    def __init__(self, led, start, end, concurrent=False, duration=0):
         self._led = led
         self._start = start
         self._end = end
+        self.concurrent = concurrent
         if self._end == 0 or self._end > self._led.lastIndex:
             self._end = self._led.lastIndex
 
         self._size = self._end - self._start + 1
         self._step = 0
+        self._duration = duration
 
     def step(self):
         raise RuntimeError("Base class step() called. This shouldn't happen")
@@ -20,11 +22,15 @@ class BaseAnimation(object):
     def run(self, sleep=None, max_steps = 0):
         cur_step = 0
         while max_steps == 0 or cur_step < max_steps:
-            self.step()
-            self._led.update()
-            if sleep:
-                time.sleep(sleep)
-            cur_step += 1
+            if self.step() == true:
+                self._led.update()
+                if sleep:
+                    time.sleep(sleep)
+                cur_step += 1
+            else: 
+                break
+        #TODO Account for a duration in run time. 0=never end the float should be in seconds
+        #TODO reconcile max steps
 
 class Rainbow(BaseAnimation):
     """Generate rainbow."""
@@ -40,8 +46,10 @@ class Rainbow(BaseAnimation):
         self._step += 1
         if self._step > 384:
             self._step = 0
+        
+        return True
 
-
+            
 class RainbowCycle(BaseAnimation):
     """Generate rainbow wheel equally distributed over strip."""
 
@@ -56,6 +64,8 @@ class RainbowCycle(BaseAnimation):
         self._step += 1
         if self._step > 384:
             self._step = 0
+        
+        return True
 
 class ColorPattern(BaseAnimation):
     """Fill the dots progressively along the strip with alternating colors."""
@@ -81,7 +91,9 @@ class ColorPattern(BaseAnimation):
             self._step -= self._step_size
             if self._step < 0:
                 self._step = self._end
-
+                
+        return True
+                
 class ColorWipe(BaseAnimation):
     """Fill the dots progressively along the strip."""
 
@@ -98,7 +110,8 @@ class ColorWipe(BaseAnimation):
         self._step += 1
         if self._start + self._step > self._end:
             self._step = 0
-
+        
+        return True
 
 class ColorChase(BaseAnimation):
     """Chase one pixel down the strip."""
@@ -118,7 +131,7 @@ class ColorChase(BaseAnimation):
         self._step += 1
         if self._start + self._step > self._end:
             self._step = 0
-
+        return True
 
 class LarsonScanner(BaseAnimation):
     """Larson scanner (i.e. Cylon Eye or K.I.T.T.)."""
@@ -172,6 +185,8 @@ class LarsonScanner(BaseAnimation):
             self._direction = -self._direction
 
         self._step += self._direction
+        
+        return True
 
 
 class LarsonRainbow(LarsonScanner):
@@ -185,7 +200,7 @@ class LarsonRainbow(LarsonScanner):
         self._color = ColorHSV(self._step * (360 / self._size)).get_color_rgb()
 
         super(LarsonRainbow, self).step()
-
+        return True
 
 class Wave(BaseAnimation):
     """Sine wave animation."""
@@ -218,3 +233,31 @@ class Wave(BaseAnimation):
             self._led.set(self._start + i, c2)
 
         self._step += 1
+        
+        return True
+        
+class Fade(BaseAnimation):
+    """Fades from one color to another"""
+    def __init__(self, led, current_color, end_color, fade_steps=1000, start=0, end=0):
+        super(Fade, self.__init__(led, start, end)
+        self._current_color = start_color
+        self._end_color = end_color
+        self._fade_steps = fade_steps
+        
+        self._r_step = (self._start_color.r - self._end_color.r)/self._fade_steps 
+        self._g_step = (self._start_color.g - self._end_color.g)/self._fade_steps 
+        self._b_step = (self._start_color.b - self._end_color.b)/self._fade_steps 
+        
+
+        
+    def step(self):
+        self._led.fillRGB(self._current_color, self._start, self._end)
+        if (self._steps < self._fade_steps):
+            #Increase to next increment in the color cycle
+            self._current_color.r += self._r_step 
+            self._current_color.g += self._g_step
+            self._current_color.b += self._b_step
+            self._step += 1
+            return True
+        else:
+            return False

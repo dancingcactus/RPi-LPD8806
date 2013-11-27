@@ -39,15 +39,10 @@ class ChannelOrder:
         
 
 class LEDStrip:
-
     def __init__(self, leds, use_py_spi = False, dev="/dev/spidev0.0"):
         #Variables:
         #	leds -- strand size
         #	dev -- spi device
-        
-#Error Messages
-	self.NO_GRID_ERROR = "Grid Not Enabled"
-	self.EXCEED_RANGE_ERROR = "There aren't that many Rows, Columns and/or Pixels"
         self.c_order = ChannelOrder.GRB
         self.dev = dev
         self.use_py_spi = use_py_spi
@@ -55,8 +50,12 @@ class LEDStrip:
         self.lastIndex = self.leds - 1
         self.gamma = bytearray(256)
         self.buffer = [0 for x in range(self.leds + 1)]
-		self.rows = 0
-		self.columns = 0
+        self.rows = 0
+        self.columns = 0
+		      
+		#Error Messages
+        self.NO_GRID_ERROR = "Grid Not Enabled"
+        self.EXCEED_RANGE_ERROR = "There aren't that many Rows, Columns and/or Pixels"
 
         if self.use_py_spi:
             import spidev

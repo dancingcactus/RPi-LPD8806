@@ -40,7 +40,6 @@ sudo chmod a+rw /dev/spidev0.0
 
 
 num = 32;
->>>>>>> bb42af55bbe41ac048a9a061b85da0bd877a4f87
 led = LEDStrip(num)
 #led.setChannelOrder(ChannelOrder.BRG) #Only use this if your strip does not use the GRB order
 #led.setMasterBrightness(0.5) #use this to set the overall max brightness of the strip
@@ -112,9 +111,6 @@ colors = [
 	Color(255,255,255),
 ]
 
-<<<<<<< HEAD
-for c in range(6):
-=======
 for c in range(4):
 	anim = ColorWipe(led, colors[c])
 
